@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>星星</title>
+		<style>
+			#box{
+				width: 500px;
+				height: 500px;
+				border: 1px solid #000;
+				margin:50px auto 0;
+				position: relative;
+			}
+			#box div{
+				position: absolute;
+				font-size:50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<script>
+			var box = document.getElementById('box');
+			var maxT = box.clientHeight;
+			box.onclick = function (ev) {
+				createStar({
+					x:ev.clientX,
+					y:ev.clientY
+				},20)
+			}
+			function color(){
+				var arr = ['red','yellow','blue','green','pink','orange','black'];
+				var num =  Math.round(Math.random()*(arr.length-1));
+				return arr[num];
+			}
+			function createStar (pos,num) {
+				for (var i=0;i<num;i++) {
+					star(pos);
+				}
+			}
+			function star (pos) {
+				var div = document.createElement('div');
+				div.innerHTML = '★';
+				div.style.color = color();
+				var l = pos.x-box.offsetLeft -div.offsetWidth/2;
+				var t = pos.y-box.offsetTop -div.offsetHeight/2;
+				div.style.left = l + 'px';
+				div.style.top = t + 'px';
+				box.appendChild(div);
+				var x = Math.round(Math.random()*10-5);
+				var y = Math.round(Math.random()*10-20);
+				div.timer = setInterval(function () {
+					div.style.left = (l+=x) + 'px';
+					div.style.top = (t+=++y) + 'px';
+					if (t >= maxT) {
+						clearInterval(div.timer);
+						box.removeChild(div);
+					}
+				},20)
+			}
+		</script>
+	</body>
+</html>
